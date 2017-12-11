@@ -1,47 +1,38 @@
 # Prerequisites
 
-## Google Cloud Platform
+## QEMU/KVM and virt-manager
 
-This tutorial leverages the [Google Cloud Platform](https://cloud.google.com/) to streamline provisioning of the compute infrastructure required to bootstrap a Kubernetes cluster from the ground up. [Sign up](https://cloud.google.com/free/) for $300 in free credits.
+This tutorial leverages QEMU/KVM and the virt-manager UI to provision the compute infrastructure required to bootstrap a Kubernetes cluster from the ground up. 
 
-[Estimated cost](https://cloud.google.com/products/calculator/#id=78df6ced-9c50-48f8-a670-bc5003f2ddaa) to run this tutorial: $0.22 per hour ($5.39 per day).
+### Install QEMU/KVM and virt-manager
 
-> The compute resources required for this tutorial exceed the Google Cloud Platform free tier.
+Ensure that QEMU/KVM and virt-manager are installed.
 
-## Google Cloud Platform SDK
+* https://www.qemu.org/
+* https://www.linux-kvm.org
+* https://virt-manager.org/
+* https://libvirt.org/
+* https://fedoraproject.org/wiki/Getting_started_with_virtualization
+* https://wiki.archlinux.org/index.php/QEMU
 
-### Install the Google Cloud SDK
-
-Follow the Google Cloud SDK [documentation](https://cloud.google.com/sdk/) to install and configure the `gcloud` command line utility.
-
-Verify the Google Cloud SDK version is 173.0.0 or higher:
-
-```
-gcloud version
-```
-
-### Set a Default Compute Region and Zone
-
-This tutorial assumes a default compute region and zone have been configured.
-
-If you are using the `gcloud` command-line tool for the first time `init` is the easiest way to do this:
+Verify the tools are installed:
 
 ```
-gcloud init
+$ qemu-system-i386 -version  	# verify qemu
+$ modinfo kvm 					# verify kvm
+$ virt-manager --version		# verify virt-manager UI tool
 ```
 
-Otherwise set a default compute region:
+### Create a virtual network
 
-```
-gcloud config set compute/region us-west1
-```
-
-Set a default compute zone:
-
-```
-gcloud config set compute/zone us-west1-c
-```
-
-> Use the `gcloud compute zones list` command to view additional regions and zones.
+This tutorial assumes a virtual network is configured as follows
+* Name : kube-net
+* IPv4 network address space : 10.240.0.0/24
+* DHCPv4 disabled
+* IPv6 address space disabled
+* Connect to a physical network
+	* Forwarding to Physical network
+	* Destination : Any physical device
+	* Mode : NAT
 
 Next: [Installing the Client Tools](02-client-tools.md)
